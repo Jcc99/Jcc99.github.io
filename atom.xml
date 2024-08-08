@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://jcc99.github.io/</id>
+    <title>Jc&apos;s Blogs</title>
+    <updated>2024-08-08T10:30:07.788Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://jcc99.github.io/"/>
+    <link rel="self" href="https://jcc99.github.io/atom.xml"/>
+    <subtitle>足迹</subtitle>
+    <logo>https://jcc99.github.io/images/avatar.png</logo>
+    <icon>https://jcc99.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, Jc&apos;s Blogs</rights>
+    <entry>
+        <title type="html"><![CDATA[VIM使用技巧]]></title>
+        <id>https://jcc99.github.io/post/vim-skill/</id>
+        <link href="https://jcc99.github.io/post/vim-skill/">
+        </link>
+        <updated>2024-08-08T10:28:08.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="vim使用技巧">VIM使用技巧</h1>
+<h2 id="多行编辑">多行编辑</h2>
+<ol>
+<li>使用CTRL + V，进入视图模式。</li>
+<li>使用大写I，进入插入编辑状态。</li>
+<li>输入需插入内容。</li>
+<li>按下ESC退出插入模式，插入内容会自动填充多行。</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[在中文环境下，使用git review编码异常问题]]></title>
+        <id>https://jcc99.github.io/post/zai-zhong-wen-huan-jing-xia-shi-yong-git-review-bian-ma-yi-chang-wen-ti/</id>
+        <link href="https://jcc99.github.io/post/zai-zhong-wen-huan-jing-xia-shi-yong-git-review-bian-ma-yi-chang-wen-ti/">
+        </link>
+        <updated>2024-08-08T10:14:33.000Z</updated>
+        <content type="html"><![CDATA[<p>在windows环境下，使用git review提交代码到Gerrit时，提示编码异常问题：<br>
+<img src="https://jcc99.github.io//post-images/1723112158308.png" alt="" loading="lazy"></p>
+<p>尝试过修改git编码格式：</p>
+<pre><code class="language-shell">git config --global core.autocrlf input
+git config --global i18n.commitencoding utf-8
+git config --global i18n.logoutputencoding utf-8
+</code></pre>
+<ul>
+<li>无效。</li>
+</ul>
+<p>通过报错提示：</p>
+<pre><code class="language-shell">出错行File &quot;D:\tools\Python311\Lib\subprocess.py&quot;, line 1194, in communicate
+</code></pre>
+<p>找到脚本subprocess.py，修改该文件。</p>
+<p>将类Popen中的构造函数参数：encoding=None ，修改为：</p>
+<pre><code class="language-python">encoding='utf-8'
+</code></pre>
+<ul>
+<li>解决。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[这是我的第一篇博客]]></title>
+        <id>https://jcc99.github.io/post/zhe-shi-wo-de-di-yi-pian-bo-ke/</id>
+        <link href="https://jcc99.github.io/post/zhe-shi-wo-de-di-yi-pian-bo-ke/">
+        </link>
+        <updated>2024-08-07T03:28:08.000Z</updated>
+        <content type="html"><![CDATA[<p>本博客用于记录Jc的一些工作、生活随想😃。<br>
+人生不是比谁先到达终点，所以过程的点点滴滴，充分享受并留下印记吧🌵~</p>
+]]></content>
+    </entry>
+</feed>

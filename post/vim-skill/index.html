@@ -1,0 +1,191 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VIM使用技巧 | Jc&#39;s Blogs</title>
+<link rel="shortcut icon" href="https://jcc99.github.io//favicon.ico?v=1727690562540">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://jcc99.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="VIM使用技巧 | Jc&#39;s Blogs - Atom Feed" href="https://jcc99.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="VIM使用技巧
+多行编辑
+
+使用CTRL + V，进入视图模式。
+使用大写I，进入插入编辑状态。
+输入需插入内容。
+按下ESC退出插入模式，插入内容会自动填充多行。
+
+..." />
+    <meta name="keywords" content="VIM" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://jcc99.github.io/">
+  <img class="avatar" src="https://jcc99.github.io//images/avatar.png?v=1727690562540" alt="">
+  </a>
+  <h1 class="site-title">
+    Jc&#39;s Blogs
+  </h1>
+  <p class="site-description">
+    足迹
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              VIM使用技巧
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-08-08
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+                <a href="https://jcc99.github.io/tag/liMnyrF3T/" class="post-tag">
+                  # VIM
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="vim使用技巧">VIM使用技巧</h1>
+<h2 id="多行编辑">多行编辑</h2>
+<ol>
+<li>使用CTRL + V，进入视图模式。</li>
+<li>使用大写I，进入插入编辑状态。</li>
+<li>输入需插入内容。</li>
+<li>按下ESC退出插入模式，插入内容会自动填充多行。</li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#vim%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7">VIM使用技巧</a>
+<ul>
+<li><a href="#%E5%A4%9A%E8%A1%8C%E7%BC%96%E8%BE%91">多行编辑</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://jcc99.github.io/post/zai-zhong-wen-huan-jing-xia-shi-yong-git-review-bian-ma-yi-chang-wen-ti/">
+              <h3 class="post-title">
+                在中文环境下，使用git review编码异常问题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://jcc99.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

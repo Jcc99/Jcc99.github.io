@@ -1,0 +1,186 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ESP32异常分析 - 除0异常 | Jc&#39;s Blogs</title>
+<link rel="shortcut icon" href="https://jcc99.github.io//favicon.ico?v=1727690562540">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://jcc99.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="ESP32异常分析 - 除0异常 | Jc&#39;s Blogs - Atom Feed" href="https://jcc99.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="// 伪代码如下：
+if(a % (b/c) == 0){
+    ......
+}
+
+在将上述代码添加到业务中后，突然触发ESP32程序coredump流程。
+Guru Meditation Error: Core  0 panic'ed..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://jcc99.github.io/">
+  <img class="avatar" src="https://jcc99.github.io//images/avatar.png?v=1727690562540" alt="">
+  </a>
+  <h1 class="site-title">
+    Jc&#39;s Blogs
+  </h1>
+  <p class="site-description">
+    足迹
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              ESP32异常分析 - 除0异常
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-09-30
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <pre><code class="language-c">// 伪代码如下：
+if(a % (b/c) == 0){
+    ......
+}
+</code></pre>
+<p>在将上述代码添加到业务中后，突然触发ESP32程序coredump流程。</p>
+<pre><code class="language-c">Guru Meditation Error: Core  0 panic'ed (Breakpoint). Exception was unhandled.
+</code></pre>
+<p>于是开始查看任务栈、CPU寄存器信息，排查无果。</p>
+<p>随顺着思路，排查代码中涉及内存、指针等相关的功能。大体思路是：内存泄漏、栈溢出、野指针等，排查无果。</p>
+<p>忽然想起最近的一个bug排查过程：该bug是由于指针类型不匹配导致的内存踩踏，导致程序coredump，相关信息是从编译器编译时，给出的warning定位到。修改指针类型便修复。</p>
+<p>于是顺着此思路，查看编译器的输出信息。果不其然在warning信息中查看到：</p>
+<pre><code class="language-c">warning: division by zero [-Wdiv-by-zero]
+</code></pre>
+<p>这是一个除零异常。于是查看代码，明确变量b、c顺序写反，导致除0，调整后修复。</p>
+<p>在RISC-V架构下的一些异常定位，还是比较生疏。若在ARM平台，触发hardfault后，可以查看原因如busfault、usagefault等，即刻就能定位到。</p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://jcc99.github.io/post/低功耗蓝牙广播数据格式/">
+              <h3 class="post-title">
+                低功耗蓝牙广播数据格式
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://jcc99.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
